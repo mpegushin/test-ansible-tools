@@ -23,10 +23,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install "ansible>=8.0.0"
 
-      - name: Run playbook (support-tools)
-        run: echo "$ANSIBLE_VAULT_PASSWORD" | ansible-playbook site.yml --tags support-tools --ask-vault-pass
+      - name: Prepare SSH key
         env:
-            ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Run playbook (support-tools)
+        run: ansible-playbook site.yml --tags support-tools --ask-vault-pass
 
       - name: Run playbook (nginx-conf)
         run: echo "$ANSIBLE_VAULT_PASSWORD" | ansible-playbook site.yml --tags nginx,conf --ask-vault-pass
