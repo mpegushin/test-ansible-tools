@@ -1,0 +1,10 @@
+---
+- name: update package cache
+  ansible.builtin.package:
+    update_cache: true
+
+- name: install support tools
+  ansible.builtin.package:
+    name: "{{ common_packages + extra_packages }}"
+    state: present
+  become: true

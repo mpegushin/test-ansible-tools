@@ -1,0 +1,10 @@
+nginx_user: www
+worker_processes: 2
+worker_connections: 2000
+client_header_timeout: 3m
+client_body_timeout: 3m
+send_timeout: 3m
+domain_name: one.example.com
+proxy_pass: http://127.0.0.1/
+
+nginx_conf_dst: /tmp/nginx.conf

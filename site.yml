@@ -1,0 +1,9 @@
+---
+- name: test-playbook
+  hosts: k3s_master
+  gather_facts: true
+  roles:
+    - role: support-tools
+      tags: [support-tools]
+    - role: nginx-conf
+      tags: [nginx, conf]

@@ -1,0 +1,3 @@
+- name: reload_nginx
+  ansible.builtin.debug:
+    msg: "This is a dummy handler — no real reload is performed."
