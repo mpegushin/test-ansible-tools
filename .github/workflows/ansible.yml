@@ -32,9 +32,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Run playbook (support-tools)
-        run: ansible-playbook site.yml --tags support-tools
-
-      - name: Run playbook (nginx-conf)
-        run: echo "$ANSIBLE_VAULT_PASSWORD" | ansible-playbook site.yml --tags nginx,conf --ask-vault-pass
         env:
-            ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        run: |
+          echo "$ANSIBLE_VAULT_PASSWORD" > ~/.vault_pass.txt
+          ansible-playbook site.yml --tags support-tools --vault-password-file ~/.vault_pass.txt
+        
+      - name: Run playbook (nginx-conf)
+        env:
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        run: |
+          echo "$ANSIBLE_VAULT_PASSWORD" > ~/.vault_pass.txt
+          ansible-playbook site.yml --tags nginx,conf --vault-password-file ~/.vault_pass.txt
